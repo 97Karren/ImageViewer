@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#101528">
+<title>色彩実験室 | GitHub接続テスト</title>
+<style>
+  :root { color-scheme: dark; --a:#8d87ff; --b:#5fddcf; }
+  * { box-sizing:border-box; }
+  body {
+    margin:0; min-height:100svh; display:grid; place-items:center;
+    background:#101528; color:#f4f5ff; font-family:system-ui,-apple-system,"Noto Sans JP",sans-serif;
+    padding:24px; transition:background 450ms ease;
+  }
+  main { width:min(100%,430px); text-align:center; }
+  .eyebrow { font-size:12px; letter-spacing:.22em; color:#b6c0dc; }
+  h1 { font-size:clamp(28px,7vw,38px); margin:12px 0 8px; font-weight:650; letter-spacing:.03em; }
+  p { color:#bbc3d5; font-size:14px; line-height:1.7; }
+  .orb {
+    width:min(65vw,260px); height:min(65vw,260px); margin:36px auto;
+    border-radius:50%;
+    background:radial-gradient(circle at 30% 27%,#fff9 0%,transparent 37%),linear-gradient(140deg,var(--a),var(--b));
+    box-shadow:0 0 55px -8px var(--a), inset -18px -20px 36px #0003;
+    transition:background 500ms,box-shadow 500ms,transform 400ms; 
+  }
+  .orb.pulse { transform:scale(1.06) rotate(8deg); }
+  .palette { color:#eff1ff; font-size:19px; letter-spacing:.08em; }
+  button {
+    margin-top:22px; appearance:none; border:0; border-radius:999px;
+    background:#f3f5ff; color:#182037; font-weight:700; font-size:16px;
+    padding:16px 42px; min-height:52px; cursor:pointer; touch-action:manipulation;
+  }
+  button:active { transform:scale(.97); }
+  .count { margin-top:20px; font-size:13px; color:#aab6d0; font-variant-numeric:tabular-nums; }
+  footer { margin-top:38px; font-size:11px; color:#75839e; }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<main>
+  <div class="eyebrow">GITHUB CONNECTION TEST</div>
+  <h1>小さな色彩実験室</h1>
+  <p>下のボタンを押すたびに、色が変わります。<br>スマホだけで試せる実験用ページです。</p>
+  <div class="orb" id="orb" aria-hidden="true"></div>
+  <div class="palette" id="palette" aria-live="polite">薄明の青</div>
+  <button type="button" id="change">色を変える</button>
+  <div class="count" id="count">操作回数：0</div>
+  <footer>ImageViewer / develop · HTML・CSS・JavaScript</footer>
+</main>
+<script>
+  const colors = [
+    ["薄明の青","#8d87ff","#5fddcf","#101528"],
+    ["夕焼け","#ffac67","#f2698a","#261525"],
+    ["深い森","#59df99","#3e8cad","#10211e"],
+    ["月光","#d8ddff","#8f9bc7","#151827"],
+    ["琥珀","#ffe18b","#ed9063","#292015"],
+    ["紫苑","#cb92ff","#7a91f6","#1e1734"]
+  ];
+  let index=0, count=0;
+  const orb=document.getElementById("orb");
+  const label=document.getElementById("palette");
+  const counter=document.getElementById("count");
+  document.getElementById("change").addEventListener("click",()=>{
+    index=(index+1)%colors.length;
+    count++;
+    const [name,a,b,bg]=colors[index];
+    document.documentElement.style.setProperty("--a",a);
+    document.documentElement.style.setProperty("--b",b);
+    document.body.style.background=bg;
+    label.textContent=name;
+    counter.textContent="操作回数："+count;
+    orb.classList.add("pulse");
+    setTimeout(()=>orb.classList.remove("pulse"),250);
+  });
+</script>
+</body>
+</html>
